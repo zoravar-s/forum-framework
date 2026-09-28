@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= userIdentifier.username %>'s Friends</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <%- include('includes/header') %>
+    <main>
+    <h3><a href="/profile/<%= userIdentifier.id %>/page1"><%= userIdentifier.username %></a>'s Friends</h3>
+    <ul>
+        <% friends.forEach(friend => { %>
+                <% if (userIdentifier.id == friend.friend2) { %>
+                <p><a href="/profile/<%= friend.friend1 %>/page1"><%= friend.senderuser %></a></p>
+                <% } else { %>
+                <p><a href="/profile/<%= friend.friend2 %>/page1"><%= friend.recipientuser %></a></p>
+                <% } %>
+            <% }) %>
+        <% if (Number(pagenum) > 1) { %>
+            <a href="/profile/<%= userIdentifier.id %>/friends/page<%= Number(pagenum)-1%>">Previous page</a>
+        <% } %>
+        <% if (Math.ceil(requestsLength/10) > Number(pagenum)) { %>
+            <a href="/profile/<%= userIdentifier.id %>/friends/page<%= Number(pagenum)+1%>">Next page</a>
+        <% } %>
+    </ul>
+    </main>
+    <%- include('includes/footer') %>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outbound Friends</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <%- include('includes/header') %>
+    <main>
+    <h3>Outbound Friend Requests</h3>
+    <a href="/inbound-friends/page1">View Inbound Friend Requests</a>
+    <ul>
+        <% requests.forEach(request => { %>
+            <p><b><%= request.sender_username %></b> send a friend request to <b><a href="/profile/<%- request.friend2 %>/page1"><%= request.recipient_username %></a></b> at <%- new Date(request.createdDate).toString() %></p>
+            <form style="display: inline;" action="/remove-friend/<%= request.friend2 %>" method="POST">
+                <button>Cancel Request</button>
+            </form> 
+            <% }) %>
+        <% if (Number(pagenum) > 1) { %>
+            <a href="/outbound-friends/page<%= Number(pagenum)-1%>">Previous page</a>
+        <% } %>
+        <% if (Math.ceil(requestsLength/10) > Number(pagenum)) { %>
+            <a href="/outbound-friends/page<%= Number(pagenum)+1%>">Next page</a>
+        <% } %>
+    </ul>
+    </main>
+    <%- include('includes/footer') %>
+</body>
+</html>

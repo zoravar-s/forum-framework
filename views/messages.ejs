@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <%- include('includes/header') %>
+    <main>
+    <h3>Messages</h3>
+    <ul>
+        <a href="/send-message" style="padding-right: 5px;"><button>Write a Message</button></a><a href="/read-messages/page1"><button>View read messages</button></a><br><br>
+        <% userMessages.forEach(post => { %>
+            <fieldset>
+            <small>From <a href="/profile/<%= post.sender %>/page1"><%= post.sender_username %></a> on <%= new Date(post.createdDate).toString() %> to <a href="/profile/<%= post.recipient %>/page1"><%= post.recipient_username %></a></small>
+            <p><b>Title:</b> <%=post.title %></p>
+            <a href="/message/<%=post.id %>"><button>View full message</button></a>
+            <% if (post.recipient_username == user.username) { %>
+            <form style="display: inline;" action="/read-message/<%= post.id %>" method="POST">
+                <button>Mark as Read</button>
+            </form>
+            <% } %>
+            </fieldset>
+        <% }) %>
+        <% if (Number(pagenum) > 1) { %>
+            <a href="/messages/page<%= Number(pagenum)-1%>">Previous page</a>
+        <% } %>
+        <% if (Math.ceil(commentslength/10) > Number(pagenum)) { %>
+            <a href="/messages/page<%= Number(pagenum)+1%>">Next page</a>
+        <% } %>
+    </ul>
+    </main>
+    <%- include('includes/footer') %>
+</body>
+</html>

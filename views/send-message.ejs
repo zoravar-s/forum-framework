@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Message</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <%- include('includes/header') %>
+    <main>
+        <form action="/send-message" method="POST">
+        <% errors.forEach(error =>{ %>
+            <p class="notice"><%= error %></p>
+        <% }) %>
+        <fieldset>
+            <legend>Send Message</legend>
+            <label for="recipient"><small>Recipient (case sensitive!)</small></label>
+            <% if (typeof currentUsername !== 'undefined') { %>
+                <input type="text" id="recipient" name="recipient" autocomplete = "off" value="<%= currentUsername %>">
+            <% } else { %>
+                <input type="text" id="recipient" name="recipient" autocomplete = "off">
+            <% } %>
+
+            <label for="title"><small>Title</small></label>
+            <input type="text" id="title" name="title" autocomplete = "off">
+
+            <label for="body"><small>Body</small></label>
+            <textarea name="body" id="body"></textarea>
+            <br>
+            <button>Send</button>
+        </fieldset>
+        </form>
+    </main>
+    <%- include('includes/footer') %>
+</body>
+</html>

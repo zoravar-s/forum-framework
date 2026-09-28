@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <%- include('includes/header') %>
+    <main>
+        <form action="/create-post" method="POST">
+        <% errors.forEach(error =>{ %>
+            <p class="notice"><%= error %></p>
+        <% }) %>
+        <fieldset>
+            <legend>Create a post</legend>
+            <label for="title"><small>Title</small></label>
+            <input type="text" id="title" name="title" autocomplete = "off">
+
+            <label for="body"><small>Body</small></label>
+            <textarea name="body" id="body"></textarea>
+            <br>
+            <button>Create</button>
+        </fieldset>
+        </form>
+    </main>
+    <%- include('includes/footer') %>
+</body>
+</html>

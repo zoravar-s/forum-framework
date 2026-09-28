@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <%- include('includes/header') %>
+    <main>
+    <h3>Hello, <%= user.username %></h3>
+    <p><a href="/profile/<%= user.userid %>/page1"><button>View full profile</button></a></p>
+    <small>Joined <%= new Date(info.userJoin).toString() %></small>
+    <table>
+        <tr>
+            <td style="position: sticky; top: 0; width: 50%;">
+                <p style="text-align: left;"><b>About me</b></p>
+                <p><fieldset><legend><b>Bio:</b></legend><%-filterUserHTML(info.bio)%></fieldset></p>
+                <form action="/create-post" method="POST">
+                    <hr>
+                    <fieldset>
+                        <legend>Create a post</legend>
+                        <label for="title"><small>Title</small></label>
+                        <input type="text" id="title" name="title" autocomplete = "off">
+
+                        <label for="body"><small>Body</small></label>
+                        <textarea name="body" id="body"></textarea>
+                        <br>
+                        <button>Create</button>
+                    </fieldset>
+                </form>
+            </td>
+            <td>
+                <p style="text-align: right;"><b>Recent posts</b></p>
+                <ul>
+                    <% userposts.forEach(post => { %>
+                        <fieldset style="margin-left: 0;">
+                        <small><%= new Date(post.createdDate).toString() %></small>
+                        <p><b><%= post.title %></b></p>
+                        <% if (post.likes == 1) { %>
+                            <small><%=post.likes%> like</small>
+                        <% } else { %>   
+                            <small><%=post.likes%> likes</small>
+                        <% } %><br><br>
+                        <small><a href="/post/<%= post.id %>">View full post</a></small>
+                        </fieldset>
+                    <% }) %>
+                </ul>
+            </td>
+        </tr>
+    </table>
+    </main>
+    <%- include('includes/footer') %>
+</body>
+</html>

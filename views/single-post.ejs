@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post - <%= post.title %></title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <%- include('includes/header') %>
+    <main>
+        <small><b>Posted by <a href="/profile/<%= post.authorid %>/page1"><%= post.username %></a></b> - <%=post.likes%> <% if (post.likes == 1) { %>like<% } else { %>likes<% } %></small>
+        <br><br>
+        <article>
+        <h3><%=post.title%></h3>
+        <p><%- filterUserHTML(post.body) %></p>
+        <small><%= new Date(post.createdDate).toString()%></small>
+        </article>
+
+        <% if (isAuthor) { %>
+            <a href="/edit-post/<%= post.id %>" class="button">Edit Post</a>
+            <form style="display: inline;" action="/delete-post/<%= post.id %>" method="POST">
+                <button>Delete Post</button>
+            </form>
+        <% } %>
+        <% if (loggedin) { %>
+            <% if (userLiked == 0) { %>
+            <form style="display: inline;" action="/like-post/<%= post.id %>" method="POST">
+                <button>Like Post</button>
+            </form>
+            <% } else { %>
+            <form style="display: inline;" action="/like-post/<%= post.id %>" method="POST">
+                <button>Unlike Post</button>
+            </form>           
+            <% } %>
+            <form action="/comment-post/<%= post.id %>" method="POST">
+            <% errors.forEach(error =>{ %>
+                <p class="notice"><%= error %></p>
+            <% }) %>
+            <hr>
+            <fieldset>
+                <legend>Comment on <%= post.username %>'s post</legend>
+                <textarea name="body" id="body"></textarea>
+                <br>
+                <button>Comment</button>
+            </fieldset>
+            </form>
+        <% } else { %>
+            <p class="notice"><a href="/login">log in</a> to comment</p>
+        <% } %>
+        <hr>
+        <p>Comments</p>
+        <% comments.forEach(comment => { %>
+            <fieldset>
+                <small><a href="/profile/<%= comment.authorid %>/page1"><%= comment.username %></a> on <%= new Date(comment.createdDate).toString() %></small>
+                <p><%= comment.body %></p>
+                <% if (comment.likes == 1) { %>
+                    <small><%=comment.likes%> like</small>
+                <% } else { %>   
+                    <small><%=comment.likes%> likes</small>      
+                <% } %>
+                <% if (loggedin) { %>
+                    <% if (comment.likedByCurrentUser == 0) { %>
+                    <form style="display: inline;" action="/like-comment/<%= comment.id %>/page<%= pagenum %>" method="POST">
+                        <br><br><small><button>Like Comment</button></small>
+                    </form>
+                    <% } else { %>
+                    <form style="display: inline;" action="/like-comment/<%= comment.id %>/page<%= pagenum %>" method="POST">
+                        <br><br><small><button>Unlike Comment</button></small>
+                    </form>           
+                    <% } %>
+                <% } %>   
+                <% if (comment.authorid === user.userid) { %>
+                <form style="display: inline;" action="/delete-comment/<%= comment.id %>" method="POST">
+                    <small><button>Delete Comment</button></small>
+                </form>
+                <% } %>
+            </fieldset>
+        <% }) %>
+        <% if (Number(pagenum) > 1) { %>
+            <a href="/post/<%= post.id %>/page<%= Number(pagenum)-1 %>">Previous page</a>
+        <% } %>
+        <% if (Math.ceil(commentslength/10) > Number(pagenum)) { %>
+            <a href="/post/<%= post.id %>/page<%= Number(pagenum)+1 %>">Next page</a>
+        <% } %>
+    </main>
+    <%- include('includes/footer') %>
+</body>
+</html>

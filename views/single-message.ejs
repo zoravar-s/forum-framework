@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message - <%= userMessages.title %></title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <%- include('includes/header') %>
+    <main>
+        <a href="/messages/page1"><button>Back to Messages</button></a><br><br>
+        <article>
+        <small>Sender: <a href="/profile/<%= userMessages.sender %>/page1"><%= sender["username"] %></a></small><hr>
+        <small>Recipient: <a href="/profile/<%= userMessages.recipient %>/page1"><%= recipient["username"] %></a></small>
+        <hr><small>Title: </small><b><%=userMessages.title%></b><hr>
+        <small><%= new Date(userMessages.createdDate).toString()%></small>
+        <p><%- filterUserHTML(userMessages.body) %></p>
+        </article>
+        <hr>
+        <% if (user.username == recipient["username"]) { %>
+        <form action="/send-message" method="POST">
+            <fieldset>
+                <legend>Reply</legend>
+                <label for="recipient"><small>Recipient (case sensitive!)</small></label>
+                <input type="text" id="recipient" name="recipient" autocomplete = "off" value="<%= sender["username"] %>">
+
+                <label for="title"><small>Title</small></label>
+                <input type="text" id="title" name="title" autocomplete = "off" value="Re: <%=userMessages.title%>">
+
+                <label for="body"><small>Body</small></label>
+                <textarea name="body" id="body"></textarea>
+                <br>
+                <button>Send</button>
+            </fieldset>
+            </form>
+        <% } %>
+    </main>
+    <%- include('includes/footer') %>
+</body>
+</html>

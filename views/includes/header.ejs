@@ -1,0 +1,14 @@
+<header>
+    <nav>
+        <% if (user) { %>
+            <a href="/">Dashboard</a>
+            <a href="/messages/page1">Messages</a>
+            <a href="/inbound-friends/page1">Friend Requests</a>
+            <a href="/settings">Settings</a>
+            <a href="/logout">Log out</a>
+        <% } else { %>
+            <a href="/signup">Sign up</a>
+            <a href="/login">Log in</a>
+        <% } %>
+    </nav>
+</header>
